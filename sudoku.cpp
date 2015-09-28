@@ -23,16 +23,32 @@ void *checkCube(void* args) {
 	cout << data->row << " " << data->col << endl;
 	cout << "CHECKING CUBES" << endl;
 
+	int num[9];
+	int i;
+	for (i = 0; i < 9; i++) {
+		num[i] = i;
+	}
+
 	return NULL;
 }
 
 void *checkAllRows(void* args) {
 	cout << "CHECKING ROWS" << endl;
+	int num[9];
+	int i;
+	for (i = 0; i < 9; i++) {
+		num[i] = i;
+	}
 	return NULL;
 }
 
 void *checkAllColumns(void* args) {
 	cout << "CHECKING COLUMNS" << endl;
+	int num[9];
+	int i;
+	for (i = 0; i < 9; i++) {
+		num[i] = i;
+	}
 	return NULL;
 }
 
