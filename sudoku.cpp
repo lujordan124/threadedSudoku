@@ -19,7 +19,7 @@ int sudoku[9][9];
 
 void *checkCube(void* args) {
 	struct cubeData *data = (struct cubeData*)args;
-	cout << data->row << " " << data->col << endl;
+	cout << data->col << " " << data->row << endl;
 	cout << "CHECKING CUBES" << endl;
 
 	int num[9];
@@ -73,19 +73,25 @@ void parseLine(char *line) {
 		int rowThread = pthread_create(&threads[0], NULL, &checkAllRows, NULL);
 		int colThread = pthread_create(&threads[1], NULL, &checkAllColumns, NULL);
 
+		pthread_join(rowThread, NULL);
+		pthread_join(colThread, NULL);
+
 		int i = 0;
 		int j = 0;
 		int threadCount = 2;
 		for (i = 0; i < 7; i+=3) {
 			for (j = 0; j < 7; j +=3) {
-				struct cubeData readParams;
-				readParams.row = i;
-				readParams.col = j;
+				struct cubeData *readParams = (cubeData *) malloc(sizeof(struct cubeData));
+				readParams->row = i;
+				readParams->col = j;
 
-				int cubeThreads = pthread_create(&threads[threadCount], NULL, &checkCube, &readParams);
+				int cubeThreads = pthread_create(&threads[threadCount], NULL, &checkCube, readParams);
+				pthread_join(cubeThreads, NULL);
 				threadCount++;
 			}
 		}
+
+		pthread_exit(threads);
 	}
 }
 
