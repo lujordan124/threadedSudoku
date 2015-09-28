@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
-#include <thread>
 #include <fstream>
-#include <string>
 #include <pthread.h>
+#include <cstring>
 
 using namespace std;
 
@@ -70,23 +69,22 @@ void parseLine(char *line) {
 
 			cout << endl;
 		}
-	}
 
-	int rowThread = pthread_create(&threads[0], NULL, &checkAllRows, NULL);
-	int colThread = pthread_create(&threads[1], NULL, &checkAllColumns, NULL);
+		int rowThread = pthread_create(&threads[0], NULL, &checkAllRows, NULL);
+		int colThread = pthread_create(&threads[1], NULL, &checkAllColumns, NULL);
 
-	int i = 0;
-	int j = 0;
-	int threadCount = 2;
-	for (i = 0; i < 7; i+=3) {
-		for (j = 0; j < 7; j +=3) {
-			cout << i << " " << j << endl;
-			struct cubeData readParams;
-			readParams.row = i;
-			readParams.col = j;
+		int i = 0;
+		int j = 0;
+		int threadCount = 2;
+		for (i = 0; i < 7; i+=3) {
+			for (j = 0; j < 7; j +=3) {
+				struct cubeData readParams;
+				readParams.row = i;
+				readParams.col = j;
 
-			int cubeThreads = pthread_create(&threads[threadCount], NULL, &checkCube, &readParams);
-			threadCount++;
+				int cubeThreads = pthread_create(&threads[threadCount], NULL, &checkCube, &readParams);
+				threadCount++;
+			}
 		}
 	}
 }
