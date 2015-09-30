@@ -130,9 +130,6 @@ void parseLine(char *line) {
 		int rowThread = pthread_create(&threads[0], NULL, &checkAllRows, NULL);
 		int colThread = pthread_create(&threads[1], NULL, &checkAllColumns, NULL);
 
-		pthread_join(threads[0], NULL);
-		pthread_join(threads[1], NULL);
-
 		int i = 0;
 		int j = 0;
 		int threadCount = 2;
@@ -143,9 +140,13 @@ void parseLine(char *line) {
 				readParams->col = j;
 
 				int cubeThreads = pthread_create(&threads[threadCount], NULL, &checkCube, readParams);
-				pthread_join(threads[threadCount], NULL);
 				threadCount++;
 			}
+		}
+
+		int myThreads;
+		for (myThreads = 0; myThreads < numThreads; myThreads++) {
+			pthread_join(threads[myThreads], NULL);
 		}
 
 		if (valid == 0) {
@@ -154,7 +155,7 @@ void parseLine(char *line) {
 			cout << "Sudoku is valid" << endl;
 		}
 
-		pthread_exit(threads);
+		pthread_exit(NULL);
 	}
 }
 
